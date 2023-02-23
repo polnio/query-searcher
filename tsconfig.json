@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "strict": true,
+    "declaration": true
+  },
+  "exclude": ["tests", "dist"]
+}
