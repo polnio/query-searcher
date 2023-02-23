@@ -1,5 +1,5 @@
 {
-  "name": "query-filter",
+  "name": "query-searcher",
   "version": "1.0.0",
   "description": "A JavaScript's object filter using queries",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/polnio/query-filter.git"
+    "url": "git+https://github.com/polnio/query-searcher.git"
   },
   "author": "Po Co",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/polnio/query-filter/issues"
+    "url": "https://github.com/polnio/query-searcher/issues"
   },
-  "homepage": "https://github.com/polnio/query-filter#readme",
+  "homepage": "https://github.com/polnio/query-searcher#readme",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": ">=5.0.0 <6.0.0",
