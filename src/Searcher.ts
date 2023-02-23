@@ -19,7 +19,7 @@ function slugify (str: string): string {
 
 const parser = new Parser()
 
-export default class Interpreter {
+export default class Searcher {
   public run<T extends Record<string, unknown>>(
     query: string,
     input: T[]

@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest'
-import Interpreter from '../src/Interpreter'
+import Searcher from '../src/Searcher'
 
-const interpreter = new Interpreter()
+const interpreter = new Searcher()
 
 const mails = [
   {
