@@ -2,10 +2,19 @@
   "name": "query-searcher",
   "version": "1.0.0",
   "description": "A JavaScript's object filter using queries",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
     "test": "vitest",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

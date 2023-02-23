@@ -6,5 +6,7 @@
     "moduleResolution": "node",
     "target": "ESNext",
     "strict": true,
-  }
+    "declaration": true
+  },
+  "exclude": ["tests", "dist"]
 }
