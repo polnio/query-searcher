@@ -6,7 +6,11 @@
     "moduleResolution": "node",
     "target": "ESNext",
     "strict": true,
-    "declaration": true
+    "declaration": true,
+    "module": "CommonJS"
   },
-  "exclude": ["tests", "dist"]
+  "exclude": [
+    "tests",
+    "dist"
+  ]
 }
