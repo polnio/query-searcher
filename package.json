@@ -1,6 +1,6 @@
 {
   "name": "query-searcher",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A JavaScript's object filter using queries",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
     "url": "git+https://github.com/polnio/query-searcher.git"
   },
   "author": "Po Co",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/polnio/query-searcher/issues"
   },
