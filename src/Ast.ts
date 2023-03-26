@@ -1,10 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export default abstract class AstNode {}
-export class ProgramAstNode extends AstNode {
-  constructor (public body: AstNode[]) {
-    super()
-  }
-}
 export class StringAstNode extends AstNode {
   constructor (public value: string) {
     super()

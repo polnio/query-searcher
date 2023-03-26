@@ -20,27 +20,24 @@ const logicalKeywords = {
 
 const stringSeparators = ["'", '"']
 
-class Lexer {
-  private isAlphaNumeric (str: string): boolean {
-    return /^[a-zA-Z0-9]+$/.test(str)
-  }
+function isAlphaNumeric (str: string): boolean {
+  return /^[a-zA-Z0-9]+$/.test(str)
+}
 
-  public run (query: string): Token[] {
-    const tokens = new Array<Token>()
-    for (let i = 0; i < query.length; i++) {
-      if (query[i] === '(') {
+export default function lex (query: string): Token[] {
+  const tokens = new Array<Token>()
+  for (let i = 0; i < query.length; i++) {
+    switch (true) {
+      case query[i] === '(':
         tokens.push(new OpenParenToken())
-        continue
-      }
-      if (query[i] === ')') {
+        break
+      case query[i] === ')':
         tokens.push(new CloseParenToken())
-        continue
-      }
-      if (query[i] === ':') {
+        break
+      case query[i] === ':':
         tokens.push(new TwoPointsToken())
-        continue
-      }
-      if (stringSeparators.includes(query[i])) {
+        break
+      case stringSeparators.includes(query[i]): {
         const start = i
         while (i < query.length && query[i + 1] !== query[start]) {
           i++
@@ -48,11 +45,11 @@ class Lexer {
         // console.log(query.substring(start + 1, i + 1));
         tokens.push(new StringToken(query.substring(start + 1, i + 1)))
         i++
-        continue
+        break
       }
-      if (this.isAlphaNumeric(query[i])) {
+      case isAlphaNumeric(query[i]): {
         const start = i
-        while (i < query.length && this.isAlphaNumeric(query[i + 1])) {
+        while (i < query.length && isAlphaNumeric(query[i + 1])) {
           i++
           if (query[i + 1] === '\\' && query[i + 2] === ' ') {
             i += 2
@@ -65,15 +62,13 @@ class Lexer {
               word.toUpperCase() as keyof typeof logicalKeywords
             ]()
           )
-          continue
+          break
         }
         tokens.push(new StringToken(word))
-        continue
+        break
       }
     }
-    tokens.push(new EndToken())
-    return tokens
   }
+  tokens.push(new EndToken())
+  return tokens
 }
-
-export default Lexer

@@ -1,7 +1,5 @@
 import { expect, it } from 'vitest'
-import Searcher from '../src/Searcher'
-
-const interpreter = new Searcher()
+import search from '../src/search'
 
 const mails = [
   {
@@ -30,36 +28,25 @@ const mails = [
   }
 ]
 it('should parse an empty string', async () => {
-  expect(interpreter.run('', mails)).toStrictEqual(mails)
+  expect(search('', mails)).toStrictEqual(mails)
 })
 it('should parse a single string', async () => {
-  expect(interpreter.run('Something', mails)).toStrictEqual([
-    mails[1],
-    mails[2]
-  ])
+  expect(search('Something', mails)).toStrictEqual([mails[1], mails[2]])
 })
 it('should parse a single string with accents and case', async () => {
-  expect(interpreter.run("'sôMething'", mails)).toStrictEqual([
-    mails[1],
-    mails[2]
-  ])
+  expect(search("'sôMething'", mails)).toStrictEqual([mails[1], mails[2]])
 })
 it('should do basic filter', async () => {
-  expect(interpreter.run('from:Someone', mails)).toStrictEqual([
-    mails[0],
+  expect(search('from:Someone', mails)).toStrictEqual([mails[0], mails[2]])
+})
+it('should do inverted filter', async () => {
+  expect(search('not from:Someone', mails)).toStrictEqual([mails[1]])
+})
+it('should do filter with logic door', async () => {
+  expect(search('from:Someone AND subject:Something', mails)).toStrictEqual([
     mails[2]
   ])
 })
-it('should do inverted filter', async () => {
-  expect(interpreter.run('not from:Someone', mails)).toStrictEqual([mails[1]])
-})
-it('should do filter with logic door', async () => {
-  expect(
-    interpreter.run('from:Someone AND subject:Something', mails)
-  ).toStrictEqual([mails[2]])
-})
 it('should do filter with sub-logic door', async () => {
-  expect(interpreter.run('to:(Someone OR Another)', mails)).toStrictEqual([
-    mails[0]
-  ])
+  expect(search('to:(Someone OR Another)', mails)).toStrictEqual([mails[0]])
 })

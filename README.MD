@@ -30,7 +30,7 @@ You can use simple-quotes and double-quotes to search spaces or logics doors as 
 ## Examples
 
 ```ts
-import Searcher from 'query-searcher'
+import search from 'query-searcher'
 
 const objectsToFilter = [
   {
@@ -59,9 +59,8 @@ const objectsToFilter = [
   }
 ]
 
-const searcher = new Searcher()
-searcher.run('Something', mails) // second and third items
-searcher.run('from:Someone', mails) // first and third items
-searcher.run('to:(Someone OR Another)', mails) // first item
+search('Something', mails) // second and third items
+search('from:Someone', mails) // first and third items
+search('to:(Someone OR Another)', mails) // first item
 
 ```

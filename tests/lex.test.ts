@@ -1,4 +1,4 @@
-import Lexer from '../src/Lexer'
+import lex from '../src/lex'
 import {
   CloseParenToken,
   EndToken,
@@ -11,19 +11,17 @@ import {
 } from '../src/Token'
 import { it, expect } from 'vitest'
 
-const lexer = new Lexer()
-
 it('should parse an empty string', async () => {
-  expect(lexer.run('')).toStrictEqual([new EndToken()])
+  expect(lex('')).toStrictEqual([new EndToken()])
 })
 it('should parse a single string', async () => {
-  expect(lexer.run('Something')).toStrictEqual([
+  expect(lex('Something')).toStrictEqual([
     new StringToken('Something'),
     new EndToken()
   ])
 })
 it('should do basic filter', async () => {
-  expect(lexer.run('from:Someone')).toStrictEqual([
+  expect(lex('from:Someone')).toStrictEqual([
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone'),
@@ -31,7 +29,7 @@ it('should do basic filter', async () => {
   ])
 })
 it('should do basic filter with string separator', async () => {
-  expect(lexer.run('from:"Someone Or Another"')).toStrictEqual([
+  expect(lex('from:"Someone Or Another"')).toStrictEqual([
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone Or Another'),
@@ -39,7 +37,7 @@ it('should do basic filter with string separator', async () => {
   ])
 })
 it('should do basic filter with space escaping', async () => {
-  expect(lexer.run('from:Someone\\ Or\\ Another')).toStrictEqual([
+  expect(lex('from:Someone\\ Or\\ Another')).toStrictEqual([
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone Or Another'),
@@ -47,7 +45,7 @@ it('should do basic filter with space escaping', async () => {
   ])
 })
 it('should do inverted filter', async () => {
-  expect(lexer.run('not from:Someone')).toStrictEqual([
+  expect(lex('not from:Someone')).toStrictEqual([
     new LogicalNotToken(),
     new StringToken('from'),
     new TwoPointsToken(),
@@ -56,7 +54,7 @@ it('should do inverted filter', async () => {
   ])
 })
 it('should do filter with logic door', async () => {
-  expect(lexer.run('from:Someone AND object:Something')).toStrictEqual([
+  expect(lex('from:Someone AND object:Something')).toStrictEqual([
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone'),
@@ -68,7 +66,7 @@ it('should do filter with logic door', async () => {
   ])
 })
 it('should do filter with sub-logic door', async () => {
-  expect(lexer.run('from:(Someone OR Another)')).toStrictEqual([
+  expect(lex('from:(Someone OR Another)')).toStrictEqual([
     new StringToken('from'),
     new TwoPointsToken(),
     new OpenParenToken(),

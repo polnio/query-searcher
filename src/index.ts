@@ -1,3 +1,3 @@
-import Searcher from './Searcher'
+import search from './search'
 
-export default Searcher
+export default search
