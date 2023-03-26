@@ -28,47 +28,46 @@ class Lexer {
   public run (query: string): Token[] {
     const tokens = new Array<Token>()
     for (let i = 0; i < query.length; i++) {
-      if (query[i] === '(') {
-        tokens.push(new OpenParenToken())
-        continue
-      }
-      if (query[i] === ')') {
-        tokens.push(new CloseParenToken())
-        continue
-      }
-      if (query[i] === ':') {
-        tokens.push(new TwoPointsToken())
-        continue
-      }
-      if (stringSeparators.includes(query[i])) {
-        const start = i
-        while (i < query.length && query[i + 1] !== query[start]) {
-          i++
-        }
-        // console.log(query.substring(start + 1, i + 1));
-        tokens.push(new StringToken(query.substring(start + 1, i + 1)))
-        i++
-        continue
-      }
-      if (this.isAlphaNumeric(query[i])) {
-        const start = i
-        while (i < query.length && this.isAlphaNumeric(query[i + 1])) {
-          i++
-          if (query[i + 1] === '\\' && query[i + 2] === ' ') {
-            i += 2
+      switch (true) {
+        case query[i] === '(':
+          tokens.push(new OpenParenToken())
+          break
+        case query[i] === ')':
+          tokens.push(new CloseParenToken())
+          break
+        case query[i] === ':':
+          tokens.push(new TwoPointsToken())
+          break
+        case stringSeparators.includes(query[i]): {
+          const start = i
+          while (i < query.length && query[i + 1] !== query[start]) {
+            i++
           }
+          // console.log(query.substring(start + 1, i + 1));
+          tokens.push(new StringToken(query.substring(start + 1, i + 1)))
+          i++
+          break
         }
-        const word = query.substring(start, i + 1).replace(/\\ /g, ' ')
-        if (Object.keys(logicalKeywords).includes(word.toUpperCase())) {
-          tokens.push(
-            logicalKeywords[
-              word.toUpperCase() as keyof typeof logicalKeywords
-            ]()
-          )
-          continue
+        case this.isAlphaNumeric(query[i]): {
+          const start = i
+          while (i < query.length && this.isAlphaNumeric(query[i + 1])) {
+            i++
+            if (query[i + 1] === '\\' && query[i + 2] === ' ') {
+              i += 2
+            }
+          }
+          const word = query.substring(start, i + 1).replace(/\\ /g, ' ')
+          if (Object.keys(logicalKeywords).includes(word.toUpperCase())) {
+            tokens.push(
+              logicalKeywords[
+                word.toUpperCase() as keyof typeof logicalKeywords
+              ]()
+            )
+            break
+          }
+          tokens.push(new StringToken(word))
+          break
         }
-        tokens.push(new StringToken(word))
-        continue
       }
     }
     tokens.push(new EndToken())
