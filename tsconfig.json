@@ -9,8 +9,5 @@
     "declaration": true,
     "module": "CommonJS"
   },
-  "exclude": [
-    "tests",
-    "dist"
-  ]
+  "exclude": ["tests", "dist"]
 }
