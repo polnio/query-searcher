@@ -1,11 +1,5 @@
 import type AstNode from './Ast'
-import {
-  BinaryAstNode,
-  ProgramAstNode,
-  StringAstNode,
-  UnaryAstNode
-} from './Ast'
-import Lexer from './Lexer'
+import { BinaryAstNode, StringAstNode, UnaryAstNode } from './Ast'
 import type Token from './Token'
 import {
   CloseParenToken,
@@ -13,8 +7,6 @@ import {
   OpenParenToken,
   StringToken
 } from './Token'
-
-const lexer = new Lexer()
 
 /* PRIORITIES:
   - Primary
@@ -24,21 +16,20 @@ const lexer = new Lexer()
   - OR
 */
 
-export default class Parser {
+class Parser {
   tokens: Token[] = []
   index: number = 0
   get current (): Token {
     return this.tokens[0]
   }
 
-  public run (query: string): ProgramAstNode {
-    this.tokens = lexer.run(query)
-    const program = new ProgramAstNode([])
-    while (this.current !== undefined && !(this.current instanceof EndToken)) {
-      program.body.push(this.parse())
+  public run (tokens: Token[]): AstNode | null {
+    if (tokens.length === 0 || tokens[0] instanceof EndToken) {
+      return null
     }
-
-    return program
+    this.tokens = tokens
+    this.index = 0
+    return this.parse()
   }
 
   private parseBinary (values: string[], next: () => AstNode): AstNode {
@@ -107,4 +98,10 @@ export default class Parser {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.tokens.shift()!
   }
+}
+
+const parser = new Parser()
+
+export default function parse (tokens: Token[]): AstNode | null {
+  return parser.run(tokens)
 }
