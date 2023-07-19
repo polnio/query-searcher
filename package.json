@@ -12,9 +12,13 @@
     }
   },
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint . --fix",
-    "build": "tsc"
+    "lint:check": "eslint .",
+    "build": "tsc",
+    "ts:check": "tsc --noEmit",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -39,6 +43,7 @@
     "prettier": "^3.0.0",
     "typescript": "*",
     "vite": "^4.2.1",
-    "vitest": "^0.28.5"
+    "vitest": "^0.28.5",
+    "husky": "^8.0.0"
   }
 }
