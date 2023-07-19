@@ -19,7 +19,7 @@ function checkStringAstNode<T extends Input>(
   element: unknown,
   astNode: StringAstNode,
   input: T[],
-  keys: string[]
+  keys: string[],
 ): boolean {
   switch (typeof element) {
     case 'undefined':
@@ -37,7 +37,7 @@ function checkStringAstNode<T extends Input>(
     case 'object':
       if (element instanceof Array) {
         return element.some((el) =>
-          checkStringAstNode(el, astNode, input, keys)
+          checkStringAstNode(el, astNode, input, keys),
         )
       }
       return false
@@ -50,21 +50,21 @@ function checkStringAstNode<T extends Input>(
 function filter<T extends Record<string, unknown>>(
   astNode: AstNode,
   input: T[],
-  keys: string[] = Array.from(new Set(input.map((o) => Object.keys(o)).flat()))
+  keys: string[] = Array.from(new Set(input.map((o) => Object.keys(o)).flat())),
 ): T[] {
   if (astNode instanceof StringAstNode) {
     return input.filter((item) =>
       keys.some((key) => {
         const element = item[key]
         return checkStringAstNode(element, astNode, input, keys)
-      })
+      }),
     )
   }
   if (astNode instanceof BinaryAstNode) {
-    if (astNode.operator === ":") {
+    if (astNode.operator === ':') {
       if (!(astNode.left instanceof StringAstNode)) {
         throw new Error(
-          'Expected string expression, got ' + astNode.left.constructor.name
+          'Expected string expression, got ' + astNode.left.constructor.name,
         )
       }
       return filter(astNode.right, input, [astNode.left.value])
@@ -94,7 +94,7 @@ function filter<T extends Record<string, unknown>>(
 
 export default function search<T extends Input>(
   query: string,
-  input: T[]
+  input: T[],
 ): T[] {
   if (query === '') {
     return input

@@ -1,49 +1,49 @@
 export default abstract class Token {
-  constructor (public value: string) {}
+  public constructor(public value: string) {}
 }
 export abstract class LogicalToken extends Token {}
 
 export class StringToken extends Token {}
 
 export class OpenParenToken extends Token {
-  constructor () {
+  public constructor() {
     super('(')
   }
 }
 export class CloseParenToken extends Token {
-  constructor () {
+  public constructor() {
     super(')')
   }
 }
 
 export class TwoPointsToken extends Token {
-  constructor () {
+  public constructor() {
     super(':')
   }
 }
 export class LogicalAndToken extends LogicalToken {
-  constructor () {
+  public constructor() {
     super('AND')
   }
 }
 export class LogicalOrToken extends LogicalToken {
-  constructor () {
+  public constructor() {
     super('OR')
   }
 }
 export class LogicalXorToken extends LogicalToken {
-  constructor () {
+  public constructor() {
     super('XOR')
   }
 }
 export class LogicalNotToken extends Token {
-  constructor () {
+  public constructor() {
     super('NOT')
   }
 }
 
 export class EndToken extends Token {
-  constructor () {
+  public constructor() {
     super('\0')
   }
 }
