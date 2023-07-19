@@ -7,8 +7,9 @@ import { CloseParenToken, EndToken, OpenParenToken, StringToken } from './Token'
   - Primary
   - Two Points
   - NOT
-  - AND
-  - OR
+  - AND / NAND
+  - XOR / NXOR
+  - OR / NOR
 */
 
 class Parser {
@@ -51,11 +52,15 @@ class Parser {
   }
 
   private parseAnd(): AstNode {
-    return this.parseBinary(['AND'], this.parseOr.bind(this))
+    return this.parseBinary(['AND', 'NAND'], this.parseXor.bind(this))
+  }
+
+  private parseXor(): AstNode {
+    return this.parseBinary(['XOR', 'NXOR'], this.parseOr.bind(this))
   }
 
   private parseOr(): AstNode {
-    return this.parseBinary(['OR'], this.parseNot.bind(this))
+    return this.parseBinary(['OR', 'NOR'], this.parseNot.bind(this))
   }
 
   private parseNot(): AstNode {

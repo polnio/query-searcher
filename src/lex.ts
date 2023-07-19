@@ -3,8 +3,11 @@ import {
   CloseParenToken,
   EndToken,
   LogicalAndToken,
+  LogicalNandToken,
+  LogicalNorToken,
   LogicalNotToken,
   LogicalOrToken,
+  LogicalXnorToken,
   LogicalXorToken,
   OpenParenToken,
   StringToken,
@@ -15,6 +18,9 @@ const logicalKeywords = {
   AND: () => new LogicalAndToken(),
   OR: () => new LogicalOrToken(),
   XOR: () => new LogicalXorToken(),
+  NAND: () => new LogicalNandToken(),
+  NOR: () => new LogicalNorToken(),
+  XNOR: () => new LogicalXnorToken(),
   NOT: () => new LogicalNotToken(),
 }
 

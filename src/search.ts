@@ -79,6 +79,33 @@ function filter<T extends Record<string, unknown>>(
       case 'OR': {
         return Array.from(new Set(filteredLeft.concat(filteredRight)))
       }
+      case 'XOR': {
+        return filteredLeft
+          .filter((element) => !filteredRight.includes(element))
+          .concat(
+            filteredRight.filter((element) => !filteredLeft.includes(element)),
+          )
+      }
+      case 'NAND': {
+        return input.filter(
+          (element) =>
+            !filteredLeft.includes(element) || !filteredRight.includes(element),
+        )
+      }
+      case 'NOR': {
+        return input
+          .filter((element) => !filteredLeft.includes(element))
+          .filter((element) => !filteredRight.includes(element))
+      }
+      case 'XNOR': {
+        return input.filter(
+          (element) =>
+            (!filteredLeft.includes(element) &&
+              filteredRight.includes(element)) ||
+            (filteredLeft.includes(element) &&
+              !filteredRight.includes(element)),
+        )
+      }
     }
   }
   if (astNode instanceof UnaryAstNode) {

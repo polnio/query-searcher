@@ -36,6 +36,21 @@ export class LogicalXorToken extends LogicalToken {
     super('XOR')
   }
 }
+export class LogicalNandToken extends LogicalToken {
+  public constructor() {
+    super('NAND')
+  }
+}
+export class LogicalNorToken extends LogicalToken {
+  public constructor() {
+    super('NOR')
+  }
+}
+export class LogicalXnorToken extends LogicalToken {
+  public constructor() {
+    super('NXOR')
+  }
+}
 export class LogicalNotToken extends Token {
   public constructor() {
     super('NOT')
