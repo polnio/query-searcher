@@ -17,8 +17,8 @@ it('should do basic filter', async () => {
     new BinaryAstNode(
       new StringAstNode('from'),
       new StringAstNode('Someone'),
-      ':'
-    )
+      ':',
+    ),
   )
 })
 it('should do inverted filter', async () => {
@@ -28,10 +28,10 @@ it('should do inverted filter', async () => {
       new BinaryAstNode(
         new StringAstNode('from'),
         new StringAstNode('Someone'),
-        ':'
+        ':',
       ),
-      'NOT'
-    )
+      'NOT',
+    ),
   )
 })
 it('should do filter with logic door', async () => {
@@ -41,15 +41,15 @@ it('should do filter with logic door', async () => {
       new BinaryAstNode(
         new StringAstNode('from'),
         new StringAstNode('Someone'),
-        ':'
+        ':',
       ),
       new BinaryAstNode(
         new StringAstNode('object'),
         new StringAstNode('Something'),
-        ':'
+        ':',
       ),
-      'AND'
-    )
+      'AND',
+    ),
   )
 })
 it('should do filter with sub-logic door', async () => {
@@ -60,9 +60,9 @@ it('should do filter with sub-logic door', async () => {
       new BinaryAstNode(
         new StringAstNode('Someone'),
         new StringAstNode('Another'),
-        'OR'
+        'OR',
       ),
-      ':'
-    )
+      ':',
+    ),
   )
 })

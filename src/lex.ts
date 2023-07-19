@@ -8,64 +8,62 @@ import {
   LogicalXorToken,
   OpenParenToken,
   StringToken,
-  TwoPointsToken
+  TwoPointsToken,
 } from './Token'
 
 const logicalKeywords = {
   AND: () => new LogicalAndToken(),
   OR: () => new LogicalOrToken(),
   XOR: () => new LogicalXorToken(),
-  NOT: () => new LogicalNotToken()
+  NOT: () => new LogicalNotToken(),
 }
 
 const stringSeparators = ["'", '"']
 
-function isAlphaNumeric (str: string): boolean {
+function isAlphaNumeric(str: string): boolean {
   return /^[a-zA-Z0-9]+$/.test(str)
 }
 
-export default function lex (query: string): Token[] {
+export default function lex(query: string): Token[] {
   const tokens = new Array<Token>()
-  for (let i = 0; i < query.length; i++) {
-    switch (true) {
-      case query[i] === '(':
-        tokens.push(new OpenParenToken())
-        break
-      case query[i] === ')':
-        tokens.push(new CloseParenToken())
-        break
-      case query[i] === ':':
-        tokens.push(new TwoPointsToken())
-        break
-      case stringSeparators.includes(query[i]): {
-        const start = i
-        while (i < query.length && query[i + 1] !== query[start]) {
-          i++
-        }
-        // console.log(query.substring(start + 1, i + 1));
-        tokens.push(new StringToken(query.substring(start + 1, i + 1)))
-        i++
-        break
+  const queryChars = query.split('')
+  while (queryChars.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const char = queryChars.shift()!
+    if (char === '(') {
+      tokens.push(new OpenParenToken())
+    } else if (char === ')') {
+      tokens.push(new CloseParenToken())
+    } else if (char === ':') {
+      tokens.push(new TwoPointsToken())
+    } else if (stringSeparators.includes(char)) {
+      let string = ''
+      while (queryChars.length > 0 && queryChars[0] !== char) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        string += queryChars.shift()!
       }
-      case isAlphaNumeric(query[i]): {
-        const start = i
-        while (i < query.length && isAlphaNumeric(query[i + 1])) {
-          i++
-          if (query[i + 1] === '\\' && query[i + 2] === ' ') {
-            i += 2
-          }
+      queryChars.shift()
+      tokens.push(new StringToken(string))
+    } else if (isAlphaNumeric(char)) {
+      let string = char
+      while (queryChars.length > 0 && isAlphaNumeric(queryChars[0])) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        string += queryChars.shift()!
+        if (queryChars[0] === '\\' && queryChars[1] === ' ') {
+          queryChars.shift()
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          string += queryChars.shift()!
         }
-        const word = query.substring(start, i + 1).replace(/\\ /g, ' ')
-        if (Object.keys(logicalKeywords).includes(word.toUpperCase())) {
-          tokens.push(
-            logicalKeywords[
-              word.toUpperCase() as keyof typeof logicalKeywords
-            ]()
-          )
-          break
-        }
-        tokens.push(new StringToken(word))
-        break
+      }
+      // console.log(string)
+      if (Object.keys(logicalKeywords).includes(string.toUpperCase())) {
+        tokens.push(
+          logicalKeywords[
+            string.toUpperCase() as keyof typeof logicalKeywords
+          ](),
+        )
+      } else {
+        tokens.push(new StringToken(string))
       }
     }
   }

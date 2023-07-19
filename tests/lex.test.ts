@@ -7,7 +7,7 @@ import {
   LogicalOrToken,
   OpenParenToken,
   StringToken,
-  TwoPointsToken
+  TwoPointsToken,
 } from '../src/Token'
 import { it, expect } from 'vitest'
 
@@ -17,7 +17,7 @@ it('should parse an empty string', async () => {
 it('should parse a single string', async () => {
   expect(lex('Something')).toStrictEqual([
     new StringToken('Something'),
-    new EndToken()
+    new EndToken(),
   ])
 })
 it('should do basic filter', async () => {
@@ -25,7 +25,7 @@ it('should do basic filter', async () => {
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone'),
-    new EndToken()
+    new EndToken(),
   ])
 })
 it('should do basic filter with string separator', async () => {
@@ -33,7 +33,7 @@ it('should do basic filter with string separator', async () => {
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone Or Another'),
-    new EndToken()
+    new EndToken(),
   ])
 })
 it('should do basic filter with space escaping', async () => {
@@ -41,7 +41,7 @@ it('should do basic filter with space escaping', async () => {
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone Or Another'),
-    new EndToken()
+    new EndToken(),
   ])
 })
 it('should do inverted filter', async () => {
@@ -50,7 +50,7 @@ it('should do inverted filter', async () => {
     new StringToken('from'),
     new TwoPointsToken(),
     new StringToken('Someone'),
-    new EndToken()
+    new EndToken(),
   ])
 })
 it('should do filter with logic door', async () => {
@@ -62,7 +62,7 @@ it('should do filter with logic door', async () => {
     new StringToken('object'),
     new TwoPointsToken(),
     new StringToken('Something'),
-    new EndToken()
+    new EndToken(),
   ])
 })
 it('should do filter with sub-logic door', async () => {
@@ -74,6 +74,6 @@ it('should do filter with sub-logic door', async () => {
     new LogicalOrToken(),
     new StringToken('Another'),
     new CloseParenToken(),
-    new EndToken()
+    new EndToken(),
   ])
 })

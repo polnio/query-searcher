@@ -3,7 +3,7 @@ import { BinaryAstNode, StringAstNode, UnaryAstNode } from './Ast'
 import lex from './lex'
 import parse from './parse'
 
-function slugify (str: string): string {
+function slugify(str: string): string {
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
@@ -15,11 +15,11 @@ function slugify (str: string): string {
 
 type Input = Record<string, unknown>
 
-function checkStringAstNode<T extends Input> (
+function checkStringAstNode<T extends Input>(
   element: unknown,
   astNode: StringAstNode,
   input: T[],
-  keys: string[]
+  keys: string[],
 ): boolean {
   switch (typeof element) {
     case 'undefined':
@@ -36,9 +36,8 @@ function checkStringAstNode<T extends Input> (
 
     case 'object':
       if (element instanceof Array) {
-        // console.log(element);
-        return element.some((_el) =>
-          checkStringAstNode(_el, astNode, input, keys)
+        return element.some((el) =>
+          checkStringAstNode(el, astNode, input, keys),
         )
       }
       return false
@@ -48,46 +47,37 @@ function checkStringAstNode<T extends Input> (
   }
 }
 
-function filter<T extends Record<string, unknown>> (
+function filter<T extends Record<string, unknown>>(
   astNode: AstNode,
   input: T[],
-  keys?: string[]
+  keys: string[] = Array.from(new Set(input.map((o) => Object.keys(o)).flat())),
 ): T[] {
   if (astNode instanceof StringAstNode) {
-    if (keys === undefined) {
-      return filter(
-        astNode,
-        input,
-        Array.from(new Set(input.map((o) => Object.keys(o)).flat()))
-      )
-    }
     return input.filter((item) =>
       keys.some((key) => {
         const element = item[key]
         return checkStringAstNode(element, astNode, input, keys)
-      })
+      }),
     )
   }
   if (astNode instanceof BinaryAstNode) {
-    switch (astNode.operator) {
-      case ':': {
-        if (!(astNode.left instanceof StringAstNode)) {
-          throw new Error(
-            'Expected string expression, got ' + astNode.left.constructor.name
-          )
-        }
-        return filter(astNode.right, input, [astNode.left.value])
-      }
-      case 'AND': {
-        return filter(astNode.left, input, keys).filter((element) =>
-          filter(astNode.right, input, keys).includes(element)
+    if (astNode.operator === ':') {
+      if (!(astNode.left instanceof StringAstNode)) {
+        throw new Error(
+          'Expected string expression, got ' + astNode.left.constructor.name,
         )
       }
+      return filter(astNode.right, input, [astNode.left.value])
+    }
+
+    const filteredLeft = filter(astNode.left, input, keys)
+    const filteredRight = filter(astNode.right, input, keys)
+    switch (astNode.operator) {
+      case 'AND': {
+        return filteredLeft.filter((element) => filteredRight.includes(element))
+      }
       case 'OR': {
-        return [
-          ...filter(astNode.left, input, keys),
-          ...filter(astNode.right, input, keys)
-        ]
+        return Array.from(new Set(filteredLeft.concat(filteredRight)))
       }
     }
   }
@@ -102,9 +92,9 @@ function filter<T extends Record<string, unknown>> (
   return []
 }
 
-export default function search<T extends Input> (
+export default function search<T extends Input>(
   query: string,
-  input: T[]
+  input: T[],
 ): T[] {
   if (query === '') {
     return input
